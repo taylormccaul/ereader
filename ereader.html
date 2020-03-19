@@ -35,7 +35,7 @@
 
         .view {
             float: right;
-            width: 78vw;
+            max-width: 76vw;
             text-align: center;
         }
     </style>
@@ -43,14 +43,15 @@
 <body>
     <div class="view">
         <h1 id="title"></h1>
+        <p id="text"></p>
     </div>
     <div class="input-form">
         <label for="title-input">Title</label>
         <input type="text" name="title-input" id="title-input">
         <label for="chapter-input">Number of Chapters</label>
         <input type="text" name="chapter-input" id="chapter-input">
-        <label for="text" id="text-label">Book Text</label>
-        <textarea name="text" id="text"></textarea>
+        <label for="text-input" id="text-label">Book Text</label>
+        <textarea name="text-input" id="text-input"></textarea>
         <label for="font-options">Font</label>
         <select name="font-options" id="font-options">
             <option value="times">Times New Roman</option>
@@ -65,9 +66,22 @@
     </div>
     <script>
         var title = document.getElementById("title-input");
+        var text = document.getElementById("text-input");
+
         title.addEventListener("input", () => {
             document.getElementById("title").innerHTML = title.value;
         });
+
+        text.addEventListener("input", () => {
+            document.getElementById("text").innerHTML = text.value;
+        });
+
+        var pos = text.value.indexOf("Chapter");
+
+        while(pos > -1) {
+            console.log(pos);
+            pos = text.value.indexOf("Chapter", pos+1);
+        }
     </script>
 </body>
 </html>
