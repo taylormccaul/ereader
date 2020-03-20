@@ -56,8 +56,8 @@
         <textarea name="text-input" id="text-input"></textarea>
 
         <label for="font-options">Font</label>
-        <select name="font-options" id="font-options">
-            <option value="times">Times New Roman</option>
+        <select id="font-options">
+            <option value="times" selected>Times New Roman</option>
             <option value="mont">Montserrat</option>
             <option value="hel">Helvetica</option>
             <option value="arial">Arial</option>
@@ -76,6 +76,8 @@
         var text = document.getElementById("text");
         var select = document.getElementById("font-options");
         var options = document.querySelector("option");
+
+        select.value = "times";
 
         titleInput.addEventListener("input", () => {
             title.innerHTML = titleInput.value;
@@ -105,9 +107,10 @@
 
         var pos = textInput.value.indexOf("Chapter");
         var number = (textInput.value.charAt(pos+8));
+        var res;
 
         while (pos > -1) {
-            var res = replaceRange(`Chapter ${number}`, 0, 9, `<br><h2>Chapter ${number}</h2><br>`);
+            res = replaceRange(`Chapter ${number}`, 0, 9, `<br><h2>Chapter ${number}</h2><br>`);
             text.innerHTML += res;
             text.innerHTML += textInput.value.slice(pos+9, textInput.value.indexOf("Chapter", pos+1));
             pos = textInput.value.indexOf("Chapter", pos+1);
