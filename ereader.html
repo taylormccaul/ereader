@@ -67,7 +67,7 @@
         </select>
 
         <label for="line-height">Line Height</label>
-        <input type="range" min="0" max="3" step="0.5" id="line-height">
+        <input type="range" min="1" max="5" step="0.5" value="1" id="line-height">
 
         <button type="submit" name="finish" id="finish">Done</button>
     </div>
@@ -97,17 +97,69 @@
             }
 
             var pos = textInput.value.indexOf("Chapter");
-            var number = (textInput.value.charAt(pos+8));
+            var br = textInput.value.indexOf("\n\n");
+            var brNumber = (textInput.value.charAt(br+3));
+            var number = 1;//(textInput.value.charAt(pos+8));
+            var brPos = [];
             var res;
             text.innerHTML = "";
 
+            var result = "";
+
+            //text.innerHTML += replaceRange(`Chapter ${number}`, 0, 9, `<br><h2>Chapter ${number}</h2><br>`);
+
             while (pos > -1) {
-                res = replaceRange(`Chapter ${number}`, 0, 9, `<br><h2>Chapter ${number}</h2><br>`);
+                /*res = replaceRange(`Chapter ${number}`, 0, 9, `<br><h2>Chapter ${number}</h2><br>`);
                 text.innerHTML += res;
                 text.innerHTML += textInput.value.slice(pos+9, textInput.value.indexOf("Chapter", pos+1));
-                pos = textInput.value.indexOf("Chapter", pos+1);
-                number = (parseInt(number) + 1).toString();
+                //br = textInput.value.indexOf("\n\n", br+1);*/
+                pos = textInput.value.indexOf("Chapter", pos+1);//(parseInt(number) + 1).toString();
+                //brNumber = (parseInt(brNumber) + 1).toString();
+                //console.log(textInput.value.slice(br+3, textInput.value.indexOf("\n\n", br+1)));
             }
+
+            while (br > -1) {
+                //res = replaceRange("\n\n", br, br+1, `Gekko`);
+                //text.innerHTML += res;
+                //text.innerHTML += textInput.value.slice(br, textInput.value.indexOf("\n\n", br+1));
+                //brPos.push(br);
+                    if (textInput.value.slice(prevBr, br).includes("Chapter")) {
+                        result += replaceRange(`Chapter ${number}`, 0, 9, `<br><h2>Chapter ${number}</h2><br>`);
+                        //console.log(textInput.value.slice(prevBr - 5, br))
+                        //result += chap;
+                        number += 1;
+                    }
+                    var prevBr = br;
+                    br = textInput.value.indexOf("\n\n", br+1);
+                    //console.log(textInput.value.slice(prevBr, br));
+                    result += "<br>" + textInput.value.slice(prevBr, br) + "<br>";
+                    brNumber = (parseInt(number) + 1).toString();
+                }
+
+            text.innerHTML += result;
+
+            //console.log(brPos);
+
+            //var result = "";
+
+            /*for (let i = 0; i < textInput.value.length; i++) {
+                if (text.innerHTML.indexOf("\n\n") == i) {
+                    console.log("HI");
+                }
+            }*/
+            //console.log(text.innerHTML)
+
+            //for (let i = 0; i < Math.floor(brPos.length / 10); i++) {
+                //console.log(textInput.value.charAt(i));
+                //console.log(textInput.value.charAt(brPos[i]));
+                ///console.log(text.innerHTML.charAt(brPos[i]));
+                //console.log(`${text.innerHTML.substring(0, brPos[i])}<br><br>${text.innerHTML.substring(brPos[i])}`);
+            //}
+
+            //text.innerHTML = result;
+
+            //textInput.value.replace(/\r\n/, "br");
+            //console.log(textInput.value);
         });
 
         range.addEventListener("input", () => {
