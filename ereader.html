@@ -49,9 +49,6 @@
         <label for="title-input">Title</label>
         <input type="text" name="title-input" id="title-input">
 
-        <!--<label for="chapter-input">Number of Chapters</label>
-        <input type="text" name="chapter-input" id="chapter-input">-->
-        
         <label for="text-input" id="text-label">Book Text</label>
         <textarea name="text-input" id="text-input"></textarea>
 
@@ -99,7 +96,8 @@
             var pos = textInput.value.indexOf("Chapter");
             var br = textInput.value.indexOf("\n\n");
             var brNumber = (textInput.value.charAt(br+3));
-            var number = 1;
+            var number = parseInt(textInput.value.slice(pos+8, pos+9));
+            //console.log(textInput.value.slice(pos+8, pos+9));
             var brPos = [];
             var res;
             text.innerHTML = "";
@@ -114,13 +112,13 @@
                     var prevBr = br;
                     br = textInput.value.indexOf("\n\n", br+1);
                     if (textInput.value.slice(prevBr, br).includes(`Chapter ${number}`)) {
-                        result += "<br>" + textInput.value.slice(prevBr, br-9) + "<br>";
+                        result += "<br>" + textInput.value.slice(prevBr, br-20) + "<br>";
                     } else {
                         result += "<br>" + textInput.value.slice(prevBr, br) + "<br>";
                     }
                 }
 
-            text.innerHTML += result;
+            text.innerHTML = result;
         });
 
         range.addEventListener("input", () => {
