@@ -48,10 +48,13 @@
     <div class="input-form">
         <label for="title-input">Title</label>
         <input type="text" name="title-input" id="title-input">
+
         <label for="chapter-input">Number of Chapters</label>
         <input type="text" name="chapter-input" id="chapter-input">
+        
         <label for="text-input" id="text-label">Book Text</label>
         <textarea name="text-input" id="text-input"></textarea>
+
         <label for="font-options">Font</label>
         <select name="font-options" id="font-options">
             <option value="times">Times New Roman</option>
@@ -62,26 +65,55 @@
             <option value="open">Open Sans</option>
             <option value="com">Comfortaa</option>
         </select>
+
         <button type="submit" name="finish" id="finish">Done</button>
     </div>
     <script>
-        var title = document.getElementById("title-input");
-        var text = document.getElementById("text-input");
+        var titleInput = document.getElementById("title-input");
+        var textInput = document.getElementById("text-input");
 
-        title.addEventListener("input", () => {
-            document.getElementById("title").innerHTML = title.value;
+        var title = document.getElementById("title");
+        var text = document.getElementById("text");
+        var select = document.getElementById("font-options");
+        var options = document.querySelector("option");
+
+        titleInput.addEventListener("input", () => {
+            title.innerHTML = titleInput.value;
         });
 
-        text.addEventListener("input", () => {
-            document.getElementById("text").innerHTML = text.value;
+        textInput.addEventListener("input", () => {
+            text.innerHTML = textInput.value;
         });
 
-        var pos = text.value.indexOf("Chapter");
+        //include options for line height, letter spacing
 
-        while(pos > -1) {
-            console.log(pos);
-            pos = text.value.indexOf("Chapter", pos+1);
+        select.addEventListener("input", () => {
+            console.log(select.value);
+            switch(select.value) {
+                case "mont":
+                    text.style.fontFamily = "Montserrat";
+                break;
+            }
+        });
+
+        function replaceRange(s, start, end, substitute) {
+            return s.substring(0, start) + substitute + s.substring(end);
         }
+
+        var str = "this is a string";
+        var newString = replaceRange(str, 0, 4, "that");
+
+        var pos = textInput.value.indexOf("Chapter");
+        var number = (textInput.value.charAt(pos+8));
+
+        while (pos > -1) {
+            var res = replaceRange(`Chapter ${number}`, 0, 9, `<br><h2>Chapter ${number}</h2><br>`);
+            text.innerHTML += res;
+            text.innerHTML += textInput.value.slice(pos+9, textInput.value.indexOf("Chapter", pos+1));
+            pos = textInput.value.indexOf("Chapter", pos+1);
+            number = (parseInt(number) + 1).toString();
+        }
+
     </script>
 </body>
 </html>
