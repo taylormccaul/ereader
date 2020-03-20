@@ -49,8 +49,8 @@
         <label for="title-input">Title</label>
         <input type="text" name="title-input" id="title-input">
 
-        <label for="chapter-input">Number of Chapters</label>
-        <input type="text" name="chapter-input" id="chapter-input">
+        <!--<label for="chapter-input">Number of Chapters</label>
+        <input type="text" name="chapter-input" id="chapter-input">-->
         
         <label for="text-input" id="text-label">Book Text</label>
         <textarea name="text-input" id="text-input"></textarea>
@@ -66,6 +66,9 @@
             <option value="com">Comfortaa</option>
         </select>
 
+        <label for="line-height">Line Height</label>
+        <input type="range" min="0" max="3" step="0.5" id="line-height">
+
         <button type="submit" name="finish" id="finish">Done</button>
     </div>
     <script>
@@ -74,8 +77,11 @@
 
         var title = document.getElementById("title");
         var text = document.getElementById("text");
+
         var select = document.getElementById("font-options");
         var options = document.querySelector("option");
+
+        var range = document.getElementById("line-height");
 
         select.value = "times";
 
@@ -85,6 +91,27 @@
 
         textInput.addEventListener("input", () => {
             text.innerHTML = textInput.value;
+
+            function replaceRange(s, start, end, substitute) {
+                return s.substring(0, start) + substitute + s.substring(end);
+            }
+
+            var pos = textInput.value.indexOf("Chapter");
+            var number = (textInput.value.charAt(pos+8));
+            var res;
+            text.innerHTML = "";
+
+            while (pos > -1) {
+                res = replaceRange(`Chapter ${number}`, 0, 9, `<br><h2>Chapter ${number}</h2><br>`);
+                text.innerHTML += res;
+                text.innerHTML += textInput.value.slice(pos+9, textInput.value.indexOf("Chapter", pos+1));
+                pos = textInput.value.indexOf("Chapter", pos+1);
+                number = (parseInt(number) + 1).toString();
+            }
+        });
+
+        range.addEventListener("input", () => {
+            text.style.lineHeight = range.value;
         });
 
         //include options for line height, letter spacing
@@ -97,25 +124,6 @@
                 break;
             }
         });
-
-        function replaceRange(s, start, end, substitute) {
-            return s.substring(0, start) + substitute + s.substring(end);
-        }
-
-        var str = "this is a string";
-        var newString = replaceRange(str, 0, 4, "that");
-
-        var pos = textInput.value.indexOf("Chapter");
-        var number = (textInput.value.charAt(pos+8));
-        var res;
-
-        while (pos > -1) {
-            res = replaceRange(`Chapter ${number}`, 0, 9, `<br><h2>Chapter ${number}</h2><br>`);
-            text.innerHTML += res;
-            text.innerHTML += textInput.value.slice(pos+9, textInput.value.indexOf("Chapter", pos+1));
-            pos = textInput.value.indexOf("Chapter", pos+1);
-            number = (parseInt(number) + 1).toString();
-        }
 
     </script>
 </body>
