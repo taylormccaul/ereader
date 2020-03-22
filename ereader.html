@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css?family=Comfortaa|Kanit|Montserrat|Open+Sans|Josefin+Sans|Roboto+Condensed|Sen&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Comfortaa|Kanit|Montserrat|Open+Sans|Josefin+Sans|Roboto+Condensed|Sen|Oswald&display=swap" rel="stylesheet"> 
     <title>E-reader</title>
     <style>
         label {
@@ -58,9 +58,27 @@
         #text {
             font-size: 16px;
         }
+
+        .saved-stories {
+            width: 100%;
+            height: 7vh;
+            font-size: 1.4em;
+            font-weight: bold;
+            background-color: rgb(228, 227, 227);
+            text-align: center;
+            font-family: 'Comfortaa', sans-serif;
+            padding: 10px;
+            box-sizing: border-box;
+
+        }
+
+        .stories {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
+    <div class="stories"></div>
     <div class="view">
         <h1 id="title"></h1>
         <div id="text"></div>
@@ -103,6 +121,9 @@
         var select = document.getElementById("font-options");
         var options = document.querySelector("option");
 
+        var done = document.getElementById("finish");
+        var stories = document.querySelector(".stories");
+
         var range = document.getElementById("line-height");
         var smallFontBtn = document.querySelector("#small-font");
         var largeFontBtn = document.querySelector("#large-font");
@@ -137,6 +158,7 @@
             }
             console.log(fontNum);
         });*/
+
         select.value = "times";
 
         titleInput.addEventListener("input", () => {
@@ -162,21 +184,62 @@
             var result = "";
 
             while (br > -1) {
-                    if (textInput.value.slice(prevBr, br).includes("Chapter")) {
-                        result += replaceRange(`Chapter ${number}`, 0, 9, `<br><h2 class="headers">Chapter ${number}</h2>`);
-                        number += 1;
-                    }
-                    var prevBr = br;
-                    br = textInput.value.indexOf("\n\n", br+1);
-                    if (textInput.value.slice(prevBr, br).includes(`Chapter ${number}`)) {
-                        result += `<p>${textInput.value.slice(prevBr, br-20)}</p>`;
-                    } else {
-                        result += `<p>${textInput.value.slice(prevBr, br)}</p>`;
-                    }
+                if (textInput.value.slice(prevBr, br).includes("Chapter")) {
+                    result += replaceRange(`Chapter ${number}`, 0, 9, `<br><h2 class="headers">Chapter ${number}</h2>`);
+                    number += 1;
                 }
+                var prevBr = br;
+                br = textInput.value.indexOf("\n\n", br+1);
+                if (textInput.value.slice(prevBr, br).includes(`Chapter ${number}`)) {
+                    result += `<p>${textInput.value.slice(prevBr, br-20)}</p>`;
+                } else {
+                    result += `<p>${textInput.value.slice(prevBr, br)}</p>`;
+                }
+            }
 
             text.innerHTML = result;
         });
+
+        done.addEventListener("click", () => {
+            var newDivText = text.innerHTML;
+            console.log(newDivText);
+            text.style.display = "none";
+
+            var newDiv = document.createElement("div");
+            newDiv.className = "saved-stories";
+
+            var newText = document.createElement("div");
+            newText.className = "saved-text";
+            //newDiv.id = `${titleInput.value}`;
+
+            condenseId(newDiv, newText);
+
+            stories.style.float = "right";
+            stories.style.width = "76vw";
+            stories.style.boxSizing = "border-box";
+            stories.appendChild(newDiv);
+
+            newDiv.innerHTML = titleInput.value;
+            newText.innerHTML = newDivText.innerHTML;
+            `${titleInput.value.toLowerCase().replace(/\s/g, "")}`.innerHTML = 
+            newDiv.addEventListener("click", () => { 
+                this.style.display = "none";
+                newText.style.display = "";
+            });
+        });
+
+        function condenseId(element, elText) {
+            var id = titleInput.value;
+            id = id.toLowerCase();
+            id = id.replace(/\s/g, "");
+            element.id = id;
+            elText.id = `${id}-div`;
+            //console.log(newDivText);
+        }
+
+        /*document.querySelector("#Pride and Prejudice").addEventListener("click", () => {
+            console.log("HI")
+        });*/
 
         range.addEventListener("input", () => {
             text.style.lineHeight = range.value;
