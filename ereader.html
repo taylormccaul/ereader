@@ -210,7 +210,6 @@
 
             var newText = document.createElement("div");
             newText.className = "saved-text";
-            //newDiv.id = `${titleInput.value}`;
 
             condenseId(newDiv, newText);
 
@@ -240,8 +239,6 @@
             text.style.lineHeight = range.value;
         });
 
-        //include options for line height, letter spacing
-
         select.addEventListener("input", () => {
             console.log(select.value);
             switch(select.value) {
@@ -250,9 +247,6 @@
                     break;
                 case "hel":
                     text.style.fontFamily = "Helvetica";
-                    break;
-                case "arial":
-                    text.style.fontFamily = "Arial";
                     break;
                 case "jose":
                     text.style.fontFamily = "Josefin Sans";
